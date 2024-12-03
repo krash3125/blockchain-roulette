@@ -49,23 +49,27 @@ contract Roulette {
         return players[index];
     }
 
-    function clearRoulette() public {
-        require(msg.sender == owner, "Not owner");
-        require(players.length != 0, "No players");
+    // function clearRoulette() public {
+    //     require(msg.sender == owner, "Not owner");
+    //     require(players.length != 0, "No players");
 
-        for (uint256 i = 0; i < players.length; i++) {
-            playersMapping[players[i]] = false;
-            payable(players[i]).transfer(entryFee);
-        }
+    //     for (uint256 i = 0; i < players.length; i++) {
+    //         playersMapping[players[i]] = false;
+    //         payable(players[i]).transfer(entryFee);
+    //     }
 
-        delete players;
-    }
+    //     delete players;
+    // }
 
     function playersCount() public view returns (uint256) {
         return players.length;
     }
 
-    function pooledAmount() public view returns (uint256) {
-        return address(this).balance;
+    // function pooledAmount() public view returns (uint256) {
+    //     return address(this).balance;
+    // }
+
+    function getPlayers() public view returns (address[] memory) {
+        return players;
     }
 }
