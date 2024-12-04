@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+event UpdatePlayers();
+
 contract Roulette {
     address public owner;
     uint256 public entryFee;
@@ -22,9 +24,11 @@ contract Roulette {
 
         playersMapping[msg.sender] = true;
         players.push(msg.sender);
+
+        emit UpdatePlayers();
     }
 
-    function beginRoulette() public payable {
+    function beginRoulette() public payable returns (address) {
         require(msg.sender == owner, "Not owner");
         require(players.length > 1, "Not enough players in roulette");
 
@@ -38,6 +42,9 @@ contract Roulette {
         }
 
         delete players;
+
+        emit UpdatePlayers();
+        return randAddress;
     }
 
     function randomPlayer() private returns (address) {
@@ -49,17 +56,17 @@ contract Roulette {
         return players[index];
     }
 
-    // function clearRoulette() public {
-    //     require(msg.sender == owner, "Not owner");
-    //     require(players.length != 0, "No players");
+    function clearRoulette() public {
+        require(msg.sender == owner, "Not owner");
+        require(players.length != 0, "No players");
 
-    //     for (uint256 i = 0; i < players.length; i++) {
-    //         playersMapping[players[i]] = false;
-    //         payable(players[i]).transfer(entryFee);
-    //     }
+        for (uint256 i = 0; i < players.length; i++) {
+            playersMapping[players[i]] = false;
+            payable(players[i]).transfer(entryFee);
+        }
 
-    //     delete players;
-    // }
+        delete players;
+    }
 
     function playersCount() public view returns (uint256) {
         return players.length;
