@@ -1,32 +1,5 @@
 export const contractABI = [
   {
-    inputs: [],
-    name: 'beginRoulette',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'clearRoulette',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'joinRoulette',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-  {
     inputs: [
       {
         internalType: 'uint256',
@@ -42,6 +15,20 @@ export const contractABI = [
     inputs: [],
     name: 'UpdatePlayers',
     type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'beginRoulette',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'clearRoulette',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
@@ -67,6 +54,13 @@ export const contractABI = [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'joinRoulette',
+    outputs: [],
+    stateMutability: 'payable',
     type: 'function',
   },
   {

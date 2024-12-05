@@ -28,7 +28,7 @@ contract Roulette {
         emit UpdatePlayers();
     }
 
-    function beginRoulette() public payable returns (address) {
+    function beginRoulette() public payable {
         require(msg.sender == owner, "Not owner");
         require(players.length > 1, "Not enough players in roulette");
 
@@ -44,7 +44,6 @@ contract Roulette {
         delete players;
 
         emit UpdatePlayers();
-        return randAddress;
     }
 
     function randomPlayer() private returns (address) {

@@ -1,11 +1,9 @@
+/* global BigInt */
 import './App.css';
 import { useEffect, useState } from 'react';
-import logo from './logo.jpg';
 import { contractABI } from './contracts/Example.js';
 import { contractAddress } from './Constants';
 const ethers = require('ethers');
-
-const ENTRY_FEE = 1000;
 
 function App() {
   const [provider, setProvider] = useState(null);
@@ -28,7 +26,16 @@ function App() {
       );
 
       setOwner(await contract.owner());
-      setEntryFee(parseInt(await contract.entryFee()));
+
+      const entryFeeWei = await contract.entryFee();
+      const entryFeeEth = ethers.formatEther(BigInt(entryFeeWei) + '', 'eth');
+
+      console.log('Entry Fee:', entryFeeWei, entryFeeEth);
+      setEntryFee({
+        wei: BigInt(entryFeeWei),
+        eth: entryFeeEth,
+      });
+
       setPlayers(await contract.getPlayers());
 
       contract.on('UpdatePlayers', async () => {
@@ -69,14 +76,13 @@ function App() {
 
       if (func === 'joinRoulette') {
         await contract.joinRoulette({
-          value: ENTRY_FEE,
+          value: entryFee?.wei,
         });
 
         await updatePlayers();
       } else if (func === 'beginRoulette') {
         console.log('Roulette Begin');
-        const address = await contract.beginRoulette();
-        setWinner(address);
+        await contract.beginRoulette();
       } else if (func === 'resetRoulette') {
         console.log('Roulette Begin');
         await contract.clearRoulette();
@@ -117,7 +123,9 @@ function App() {
             <p className="text-white text-lg font-medium">Connected Wallet:</p>
             <p className="text-white text-xl">{connectedAddress}</p>
             <p className="text-white text-lg font-medium mt-2">Entry Fee:</p>
-            <p className="text-white text-xl">{entryFee}</p>
+            <p className="text-white text-xl">
+              {entryFee?.eth} eth - {parseInt(entryFee?.wei)} wei
+            </p>
           </div>
         )}
         {!connectedAddress && (
@@ -161,6 +169,7 @@ function App() {
               Winner of Last Roulette:
             </h5>
             <p className="text-white text-lg">{winner?.from}</p>
+            <p className="text-white text-lg">{JSON.stringify(winner)}</p>
           </div>
         )}
 
